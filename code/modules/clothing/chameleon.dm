@@ -224,6 +224,10 @@
 			var/obj/item/clothing/CL = I
 			var/obj/item/clothing/PCL = picked_item
 			CL.flags_cover = initial(PCL.flags_cover)
+		if(istype(I, /obj/item/modular_computer/pda))
+			var/obj/item/modular_computer/pda/P = I
+			P.icon_state_unpowered = initial(picked_item.icon_state)
+			P.icon_state_powered = initial(picked_item.icon_state)
 	target.icon = initial(picked_item.icon)
 
 /datum/action/item_action/chameleon/change/Trigger()
@@ -632,7 +636,29 @@
 /obj/item/pda/chameleon/broken/Initialize()
 	. = ..()
 	chameleon_action.emp_randomise(INFINITY)
+///// Chameleon modular PDA
+/obj/item/modular_computer/pda/preset/chameleon
+	name = "PDA"
+	var/datum/action/item_action/chameleon/change/chameleon_action
 
+/obj/item/modular_computer/pda/preset/chameleon/Initialize()
+	. = ..()
+	chameleon_action = new(src)
+	chameleon_action.chameleon_type = /obj/item/modular_computer/pda/preset
+	chameleon_action.chameleon_name = "PDA"
+	chameleon_action.chameleon_blacklist = typecacheof(list(/obj/item/modular_computer/pda/preset/heads, /obj/item/modular_computer/pda/preset/ai, /obj/item/modular_computer/pda/preset/ai/pai, /obj/item/modular_computer/pda/preset), only_root_path = TRUE)
+	chameleon_action.initialize_disguises()
+
+/obj/item/modular_computer/pda/preset/chameleon/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+	chameleon_action.emp_randomise()
+
+/obj/item/modular_computer/pda/preset/chameleon/broken/Initialize()
+	. = ..()
+	chameleon_action.emp_randomise(INFINITY)
+////// 
 /obj/item/stamp/chameleon
 	var/datum/action/item_action/chameleon/change/chameleon_action
 

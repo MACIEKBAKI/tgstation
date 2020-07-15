@@ -6,7 +6,7 @@
 	max_integrity = 200
 	density = TRUE
 	anchored = TRUE
-	var/obj/item/pda/storedpda = null
+	var/obj/item/modular_computer/pda/storedpda = null
 	var/obj/item/card/id/storedid = null
 	var/pda_icons = list(
 		"Assistant" = "pda",
@@ -103,16 +103,17 @@
 /obj/machinery/pdapainter/Initialize()
 	. = ..()
 	var/list/blocked = list(
-		/obj/item/pda/ai/pai,
-		/obj/item/pda/ai,
-		/obj/item/pda/heads,
-		/obj/item/pda/clear,
-		/obj/item/pda/syndicate,
-		/obj/item/pda/chameleon,
-		/obj/item/pda/chameleon/broken)
+		/obj/item/modular_computer/pda/preset,
+		/obj/item/modular_computer/pda/preset/ai/pai,
+		/obj/item/modular_computer/pda/preset/ai,
+		/obj/item/modular_computer/pda/preset/heads,
+		/obj/item/modular_computer/pda/preset/clear,
+		/obj/item/modular_computer/pda/preset/syndicate,
+		/obj/item/modular_computer/pda/preset/chameleon,
+		/obj/item/modular_computer/pda/preset/chameleon/broken)
 
-	for(var/P in typesof(/obj/item/pda) - blocked)
-		var/obj/item/pda/D = new P
+	for(var/P in typesof(/obj/item/modular_computer/pda/preset) - blocked)
+		var/obj/item/modular_computer/pda/preset/D = new P
 
 		//D.name = "PDA Style [colorlist.len+1]" //Gotta set the name, otherwise it all comes up as "PDA"
 		D.name = D.icon_state //PDAs don't have unique names, but using the sprite names works.
@@ -151,7 +152,7 @@
 		power_change()
 		return
 
-	else if(istype(O, /obj/item/pda))
+	else if(istype(O, /obj/item/modular_computer/pda))
 		if(storedpda)
 			to_chat(user, "<span class='warning'>There is already a PDA inside!</span>")
 			return

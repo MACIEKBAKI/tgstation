@@ -447,3 +447,7 @@
 	if(physical && physical != src)
 		return physical.Adjacent(neighbor)
 	return ..()
+
+// zmiana nazwy PDA
+/obj/item/modular_computer/proc/update_name()
+	return

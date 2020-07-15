@@ -18,3 +18,7 @@
 /datum/computer_file/data/logfile
 	filetype = "LOG"
 
+/datum/computer_file/data/email_account
+	var/login = ""
+	var/password = ""
+

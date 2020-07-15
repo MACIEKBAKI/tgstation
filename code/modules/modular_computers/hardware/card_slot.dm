@@ -67,7 +67,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		H.sec_hud_set_ID()
-
+	holder.update_name()
 	return TRUE
 
 
@@ -101,6 +101,7 @@
 			for(var/I in holder.idle_threads)
 				var/datum/computer_file/program/P = I
 				P.event_idremoved(1, slot)
+			holder.update_name()
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.sec_hud_set_ID()

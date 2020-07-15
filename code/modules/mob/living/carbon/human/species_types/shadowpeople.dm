@@ -210,6 +210,12 @@
 		PDA.f_lum = 0
 		PDA.update_icon()
 		visible_message("<span class='danger'>The light in [PDA] shorts out!</span>")
+	if(istype(O, /obj/item/modular_computer/pda))
+		var/obj/item/modular_computer/pda/PDA = O
+		PDA.comp_light_luminosity = 0
+		PDA.has_light = FALSE
+		PDA.light_on = FALSE
+		visible_message("<span class='danger'>The light in [PDA] shorts out!</span>")
 	else
 		visible_message("<span class='danger'>[O] is disintegrated by [src]!</span>")
 		O.burn()
