@@ -34,7 +34,7 @@ export const NtosEmailClient = (props, context) => {
               LOGIN: <Button.Input
                     content={(stored_login ? stored_login : "Input Login")}
                     currentValue={stored_login}
-                    onCommit={(e, value) => act('', {
+                    onCommit={(e, value) => act('PRG_INPUTLOGIN', {
                       new_name: value,
                     })} />
             </Box>
@@ -42,7 +42,7 @@ export const NtosEmailClient = (props, context) => {
               PASSWORD: <Button.Input
                     content={(stored_password ? stored_password : "Input Login")}
                     currentValue={stored_password}
-                    onCommit={(e, value) => act('', {
+                    onCommit={(e, value) => act('PRG_INPUTPASSWORD', {
                       new_name: value,
                     })} />
             </Box>
