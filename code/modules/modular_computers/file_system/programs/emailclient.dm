@@ -39,6 +39,12 @@
                 account.login = stored_login
                 account.password = stored_password
                 return TRUE
+        if ("PRG_inputlogin")
+            stored_login = params["new_login"]
+            return TRUE
+        if("PRG_inputpassword")
+            stored_password = params["new_password"]
+            return TRUE
     return FALSE
 
 /proc/generate_email(login = "DefaultUser[rand(1000,9999)]", password = "[rand(1000,9999)]")
