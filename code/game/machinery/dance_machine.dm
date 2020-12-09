@@ -36,6 +36,69 @@
 	else
 		icon_state = "[initial(icon_state)]"
 
+/obj/machinery/jukebox/ui_interact(mob/user, datum/tgui/ui)
+  ui = SStgui.try_update_ui(user, src, ui)
+  if(!ui)
+    ui = new(user, src, "Jukebox")
+    ui.open()
+
+/obj/machinery/jukebox/ui_act(action, params)
+	switch(action)
+		if("toggle")
+			if (QDELETED(src))
+				return
+			if(!active)
+				if(stop > world.time)
+					to_chat(usr, "<span class='warning'>Error: The device is still resetting from the last activation, it will be ready again in [DisplayTimeText(stop-world.time)].</span>")
+					playsound(src, 'sound/misc/compiler-failure.ogg', 50, 1)
+					return
+				if(!activate_music())
+					to_chat(usr, "<span class='warning'>Error: Hardware failure, try again.</span>")
+					playsound(src, 'sound/misc/compiler-failure.ogg', 50, TRUE)
+					return
+				START_PROCESSING(SSobj, src)
+				updateUsrDialog()
+			else if(active)
+				stop = 0
+				updateUsrDialog()
+		if("select")
+			if(active)
+				to_chat(usr, "<span class='warning'>Error: You cannot change the song until the current one is over.</span>")
+				return
+
+			var/selected = input(usr, "Choose your song", "Track:") as null|anything in SSjukeboxes.song_lib
+			if(QDELETED(src) || !selected)
+				return
+			selection = SSjukeboxes.song_lib[selected]
+			updateUsrDialog()
+
+		if("select_dropdown")
+			if(active)
+				to_chat(usr, "<span class='warning'>Error: You cannot change the song until the current one is over. </span>")
+				return
+			var/selected = params["value"]
+			if(QDELETED(src) || !selected)
+				return
+			selection = SSjukeboxes.song_lib[selected]
+			updateUsrDialog()
+
+
+/obj/machinery/jukebox/ui_data(mob/user)
+  var/list/data = list(
+	  "active" = active,
+	  "stop" = stop,
+	  "allowed" = allowed(user),
+	  "channel" = channel,
+	  "selection" = selection,
+	  "anchored" = anchored,
+	  "track_amount" = SSjukeboxes.songs.len,
+	  "track_list" = SSjukeboxes.songs,
+	  "selected_track" = SSjukeboxes.songs[selection],
+	  "selected_track_alt" = SSjukeboxes.song_lib[selection]
+  )
+
+  return data
+/*
 /obj/machinery/jukebox/ui_interact(mob/user)
 	. = ..()
 	if(!user.canUseTopic(src, !issilicon(user)))
@@ -94,7 +157,7 @@
 				return
 			selection = SSjukeboxes.song_lib[selected]
 			updateUsrDialog()
-
+*/
 /obj/machinery/jukebox/proc/activate_music()
 	channel = SSjukeboxes.add_jukebox(src, selection)
 	if(isnull(channel))
